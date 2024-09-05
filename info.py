@@ -34,7 +34,7 @@ AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
 DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://Userakv:Akv@cluster0.btlemtq.mongodb.net/?retryWrites=true&w=majority")
 DATABASE_NAME = environ.get('DATABASE_NAME', "sathaao")
 COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
-AUTO_DEL_TIME =   int(environ.get('AUTO_DEL_TIME', 5)) #min
+AUTO_DEL_TIME =   int(environ.get('AUTO_DEL_TIME', 20)) #min
 # FSUB
 auth_channel = environ.get('AUTH_CHANNEL', '-1002161026912')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
