@@ -150,7 +150,7 @@ async def advantage_spoll_choker(bot, query):
     "<b>📍 File Not available Reasons\n\n"
     "<i>1) O.T.T Or DVD Not Released\n\n"
     "2) Type Name With Year</i>\n\n"
-    "3) ʀᴇᴘᴏʀᴛ ᴛᴏ ᴀᴅᴍɪɴ •@Helloobrro\n\n"
+    "3) ʀᴇᴘᴏʀᴛ ᴛᴏ ᴀᴅᴍɪɴ •@Mr_NotPerfect\n\n"
     "ᴏʀ ʀᴇǫᴜᴇsᴛ ɪɴ " 
     "ᴏᴜʀ <a href='https://t.me/+MyCJPbznvVNjYzE1'>ᴏᴛʜᴇʀ ɢʀᴏᴜᴘ...</a></b>"
 )
@@ -823,12 +823,29 @@ async def auto_filter(client, msg, spoll=False):
 
 
 async def advantage_spell_chok(msg):
-    k = await msg.reply("<b>sᴏʀʀʏ ɴᴏ ꜰɪʟᴇs ᴡᴇʀᴇ ꜰᴏᴜɴᴅ ꜰᴏʀ ʏᴏᴜʀ ʀᴇǫᴜᴇꜱᴛ 😕\nʀᴇᴘᴏʀᴛ ᴛᴏ ᴀᴅᴍɪɴ •@Helloobrro\n\nᴏʀ ʀᴇǫᴜᴇsᴛ ɪɴ\nᴏᴜʀ<a href='https://t.me/+MyCJPbznvVNjYzE1'> ᴏᴛʜᴇʀ ɢʀᴏᴜᴘ...</a></b>")
-    await asyncio.sleep(8)
+    # Sending the tip and error message with specific words bolded
+    k = await msg.reply(
+        "<b>✅ <b>Tɪᴘ ᴛᴏ ʀᴇǫᴜᴇsᴛ</b> : 👇\n\n"
+        "Lᴏᴋɪ S01E05 ☑️\n"
+        "Lᴏᴋɪ S01 ☑️\n"
+        "Lᴏᴋɪ Sᴇᴀsᴏɴ 1 Eᴘɪsᴏᴅᴇ 5 ✖️\n\n"
+        "Tɪɢᴇʀ 3 2023 ☑️\n"
+        "Tɪɢᴇʀ 3 2023 Hɪɴᴅɪ ☑️\n"
+        "Tɪɢᴇʀ 3 2023 Hɪɴᴅɪ Dᴜʙʙᴇᴅ ✖️\n"
+        "Tɪɢᴇʀ 3 2023 Mᴏᴠɪᴇ ✖️\n\n"
+        "<b>क्षमा करें</b>, हमें आपकी फ़ाइल नहीं मिली। हो सकता है कि आपने कुछ गलत किया हो? "
+        "कृपया सही ढंग से लिखने का प्रयास करें 🙌\n\n"
+        "<b>SORRY</b>, we did not find your file. Maybe you made a mistake? "
+        "Please try to write correctly 😊</b>",
+        parse_mode="HTML"  # Ensures the message is formatted as HTML
+    )
+    
+    # Wait for 8 seconds before deleting the message
+    await asyncio.sleep(30) 
+    # Delete the message
     await k.delete()
     return
  
-
 async def manual_filters(client, message, text=False):
     group_id = message.chat.id
     name = text or message.text
