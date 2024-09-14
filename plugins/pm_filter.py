@@ -811,7 +811,7 @@ async def auto_filter(client, msg, spoll=False):
 async def advantage_spell_chok(msg):
     # Sending the tip and error message with specific words bolded using markdown
     k = await msg.reply(
-        "✅ Tɪᴘ ᴛᴏ ʀᴇǫᴜᴇsᴛ : 👇\n\n"
+        "**✅ Tɪᴘ ᴛᴏ ʀᴇǫᴜᴇsᴛ :** 👇\n\n"
         "Lᴏᴋɪ S01E05 ☑️\n"
         "Lᴏᴋɪ S01 ☑️\n"
         "Lᴏᴋɪ Sᴇᴀsᴏɴ 1 Eᴘɪsᴏᴅᴇ 5 ✖️\n\n"
@@ -819,14 +819,14 @@ async def advantage_spell_chok(msg):
         "Tɪɢᴇʀ 3 2023 Hɪɴᴅɪ ☑️\n"
         "Tɪɢᴇʀ 3 2023 Hɪɴᴅɪ Dᴜʙʙᴇᴅ ✖️\n"
         "Tɪɢᴇʀ 3 2023 Mᴏᴠɪᴇ ✖️\n\n"
-        "क्षमा करें, हमें आपकी फ़ाइल नहीं मिली। हो सकता है कि आपने कुछ गलत किया हो? "
+        "**क्षमा करें,**हमें आपकी फ़ाइल नहीं मिली। हो सकता है कि आपने कुछ गलत किया हो? "
         "कृपया सही ढंग से लिखने का प्रयास करें 🙌\n\n"
-        "SORRY, we did not find your file. Maybe you made a mistake? "
+        "**SORRY,** we haven't find your file. Maybe you made a mistake? "
         "Please try to write correctly 😊"
     )
     
-    # Wait for 30 seconds before deleting the message
-    await asyncio.sleep(30)  
+    # Wait for 60 seconds before deleting the message
+    await asyncio.sleep(60)  
     # Delete the message
     await k.delete()
     return
