@@ -114,6 +114,12 @@ channel - to get list of total connected channels
 broadcast - to broadcast a message to all Eva Maria users
 batch - to create link for multiple posts
 link - to create link for one post
+
+👇🏻 28-aug-2024
+add_fsub - to increase new fsub 
+del_fsub - to delete a fsub
+fsub_Channels
+
 ```
 ## Support
 [![telegram badge](https://img.shields.io/badge/Telegram-Group-30302f?style=flat&logo=telegram)](https://t.me/vj_bot_disscussion)
