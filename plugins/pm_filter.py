@@ -391,19 +391,33 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
             
     elif query.data.startswith('isJoined'):
-        command , channel_id= query.data.split('#')[1:]
-        try :
-
+        try:
+            command, channel_id = query.data.split('#')[1:]
+        except ValueError:
+            return await query.answer('Invalid data format', show_alert=True)
+    
+        try:
+        # Check if the user is a member of the channel
             user = await client.get_chat_member(int(channel_id), query.from_user.id)
         except UserNotParticipant:
-            if not await db.get_fsub_join_req(channel_id , query.from_user.id) :
-                return await query.answer('Join this Channel First' , show_alert=True)
-            else:pass
+        # If the user is not a participant and no join request exists, prompt them to join
+            if not await db.get_fsub_join_req(channel_id, query.from_user.id):
+              return await query.answer('Join this Channel First', show_alert=True)
+        except Exception as e:
+        # Catch any other error such as invalid channel ID
+            return await query.answer(f"Error: {str(e)}", show_alert=True)
+
+        # Create an inline button to proceed after joining
         btn = [
-            [InlineKeyboardButton(text = 'Click me' , url=f"https://t.me/{temp.U_NAME}?start=nkdsnkjn_{command}") ]
-        ]
+        [InlineKeyboardButton(text='Click me', url=f"https://t.me/{temp.U_NAME}?start=nkdsnkjn_{command}")]
+         ]
         reply_markup = InlineKeyboardMarkup(btn)
-        return await query.message.edit_text('Thanks For Joining, click the button below to Continue.' ,  reply_markup=reply_markup)
+
+        # Try to edit the message with the new button
+        try:
+            await query.message.edit_text('Thanks For Joining, click the button below to Continue.', reply_markup=reply_markup)
+        except Exception as e:
+            return await query.answer(f"Failed to update message: {str(e)}", show_alert=True)
 
     elif query.data.startswith("checksub"):
         if (AUTH_CHANNEL or REQ_CHANNEL) and not await is_subscribed(client, query):
@@ -861,4 +875,4 @@ async def manual_filters(client, message, text=False):
                     logger.exception(e)
                 break
     else:
-        return False
+        return False 
