@@ -8,10 +8,10 @@ from Script import script
 import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
-from info import ADMINS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION, REQ_CHANNEL
+from info import AUTO_DEL_TIME,  ADMINS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION, REQ_CHANNEL
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters, enums
-from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
+from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid , UserNotParticipant
 from utils import get_size, is_subscribed, get_poster, search_gagala, temp, get_settings, save_group_settings, imdb
 from database.users_chats_db import db
 from database.ia_filterdb import Media, get_file_details, get_search_results
@@ -389,6 +389,22 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
         except Exception as e:
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            
+    elif query.data.startswith('isJoined'):
+        command , channel_id= query.data.split('#')[1:]
+        try :
+
+            user = await client.get_chat_member(int(channel_id), query.from_user.id)
+        except UserNotParticipant:
+            if not await db.get_fsub_join_req(channel_id , query.from_user.id) :
+                return await query.answer('Join this Channel First' , show_alert=True)
+            else:pass
+        btn = [
+            [InlineKeyboardButton(text = 'Click me' , url=f"https://t.me/{temp.U_NAME}?start=nkdsnkjn_{command}") ]
+        ]
+        reply_markup = InlineKeyboardMarkup(btn)
+        return await query.message.edit_text('Thanks For Joining, click the button below to Continue.' ,  reply_markup=reply_markup)
+
     elif query.data.startswith("checksub"):
         if (AUTH_CHANNEL or REQ_CHANNEL) and not await is_subscribed(client, query):
             await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒", show_alert=True)
@@ -768,18 +784,27 @@ async def auto_filter(client, msg, spoll=False):
         cap = f"Here is what i found for your query <u><i>{search}</u></i>"
     if imdb and imdb.get('poster'):
         try:
-            await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
+            rep = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
                                       reply_markup=InlineKeyboardMarkup(btn))
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
             pic = imdb.get('poster')
             poster = pic.replace('.jpg', "._V1_UX360.jpg")
-            await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
+            rep = await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
         except Exception as e:
             logger.exception(e)
-            await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+            rep = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        await asyncio.sleep(AUTO_DEL_TIME * 60)
+        await rep.delete()
+        await message.delete()
+
     else:
-        await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        rep = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        await asyncio.sleep(AUTO_DEL_TIME * 60)
+        await rep.delete()
+        await message.delete()
     if spoll:
+        await spoll.message.delete()
+        await asyncio.sleep(AUTO_DEL_TIME * 60)
         await msg.message.delete()
 
 
